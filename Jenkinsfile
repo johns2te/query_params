@@ -1,6 +1,6 @@
 import groovy.sql.Sql
 
-library 'cb-days@master'
+library 'cb-days@main'
 def mysqlPodYaml = libraryResource 'podtemplates/mysql.yml'
 def gcpPodYaml = libraryResource 'podtemplates/cloud-run.yml'
 pipeline {
