@@ -58,9 +58,14 @@ pipeline {
             }
         }
         stage('Transfer to GCP Bucket') {
-            agent any
+            agent {
+                kubernetes {
+                    label 'cloud-run-pod'
+                    yaml gcpPodYaml
+                }
+            }
             steps {
-                //container ('gcp-sdk'){
+                container ('gcp-sdk'){
                 unstash 'query-results'
                 sleep 600
                 //curl -X POST \-H "Authorization: Bearer ${'gcloud auth print-access-token'}" \-H "Content-Type: text/plain" \-T "${'/query.txt'}" \"${'https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/'}"
