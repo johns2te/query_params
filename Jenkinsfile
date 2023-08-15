@@ -2,7 +2,7 @@ import groovy.sql.Sql
 
 library 'cb-days@master'
 def mysqlPodYaml = libraryResource 'podtemplates/mysql.yml'
-//def gcpPodYaml = libraryResource 'podtemplates/cloud-run.yml'
+def gcpPodYaml = libraryResource 'podtemplates/cloud-run.yml'
 pipeline {
     agent none
     environment {
@@ -14,6 +14,7 @@ pipeline {
         stage('Get Params from MYSQL') {
             agent {
                 kubernetes {
+                    label 'mysql'
                     yaml mysqlPodYaml
                 }
             }
@@ -51,7 +52,7 @@ pipeline {
                 }
             }
         }
-        /*stage('Transfer to GCP Bucket') {
+        stage('Transfer to GCP Bucket') {
             agent {
                 kubernetes {
                     label 'gcpsql'
@@ -61,13 +62,10 @@ pipeline {
             steps {
                 container ('gcp-sdk'){
                     unstash 'query-results'
-                    sh '''
-                        gcloud auth activate-refresh-token "$GOOGLE_OAUTH_TOKEN_CREDS"
-                        gcloud config set core-flow-research
-                        gsutil cp query.txt gs://tjohns-mysql-dump/query-results/
-                    '''
+                    sh 'gcloud auth activate-access-token "$GOOGLE_OAUTH_TOKEN"'
+                    sh "gsutil cp query.txt gs://tjohns-mysql-dump/query-results/"
                 }
             }
-        }*/
+        }
     }
 }
