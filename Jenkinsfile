@@ -7,7 +7,7 @@ pipeline {
     agent none
     environment {
         MYSQL_CREDS=credentials('mysql')
-        //GBUCKET_CREDS=credentials('gbucket')
+        GOOGLE_OAUTH_TOKEN_CREDS=credentials('gcloud')
     }
 
     stages {
@@ -62,6 +62,7 @@ pipeline {
             steps {
                 container ('gcp-sdk'){
                     unstash 'query-results'
+                    sh 'gcloud auth activate-refresh-token --oauth2_access_token="$GOOGLE_OAUTH_TOKEN"'
                     sh "gsutil cp query.txt gs://tjohns-mysql-dump/query-results/"
                 }
             }
