@@ -65,7 +65,7 @@ pipeline {
                     sh '''
                         export CLOUDSDK_CORE_DISABLE_PROMPTS=1
                         export CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE="$GOOGLE_OAUTH_TOKEN_CREDS"
-                        gcloud config set core-flow-research
+                        gcloud config set project core-flow-research
                         gsutil cp query.txt gs://tjohns-mysql-dump/query-results/
                     '''
                 }
