@@ -62,6 +62,7 @@ pipeline {
             steps {
                 container ('gcp-sdk'){
                     unstash 'query-results'
+                    sleep 140
                     sh '''
                         export CLOUDSDK_CORE_DISABLE_PROMPTS=1
                         export CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE="$GOOGLE_OAUTH_TOKEN_CREDS"
