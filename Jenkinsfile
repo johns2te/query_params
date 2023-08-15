@@ -58,6 +58,7 @@ pipeline {
                     label 'gcpsql'
                     yaml gcpPodYaml
                 }
+            }
             steps {
                 container ('gcp-sdk'){
                     unstash 'query-results'
