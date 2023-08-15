@@ -55,7 +55,7 @@ pipeline {
         stage('Transfer to GCP Bucket') {
             agent {
                 kubernetes {
-                    label 'cloud-run-pod'
+                    label 'gcpsql'
                     yaml gcpPodYaml
                 }
             }
@@ -63,9 +63,8 @@ pipeline {
                 container ('gcp-sdk'){
                     unstash 'query-results'
                     sh '''
-                        export CLOUDSDK_CORE_DISABLE_PROMPTS=1
-                        export CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE="$GOOGLE_OAUTH_TOKEN_CREDS"
-                        gcloud config set project core-flow-research
+                        gcloud auth activate-refresh-token "$GOOGLE_OAUTH_TOKEN_CREDS"
+                        gcloud config set core-flow-research
                         gsutil cp query.txt gs://tjohns-mysql-dump/query-results/
                     '''
                 }
