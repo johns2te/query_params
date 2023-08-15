@@ -11,7 +11,7 @@ pipeline {
     }
 
     stages {
-        stage('get pods') {
+        stage('Get Params from MYSQL') {
             agent {
                 kubernetes {
                     label 'mysql'
@@ -52,7 +52,7 @@ pipeline {
                 }
             }
         }
-        stage('Transfer to Master') {
+        stage('Transfer to GCP Bucket') {
             agent {
                 kubernetes {
                     label 'gcpsql'
