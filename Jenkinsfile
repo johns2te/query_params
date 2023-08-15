@@ -14,7 +14,6 @@ pipeline {
         stage('Get Params from MYSQL') {
             agent {
                 kubernetes {
-                    label 'mysql'
                     yaml mysqlPodYaml
                 }
             }
