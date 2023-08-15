@@ -63,7 +63,7 @@ pipeline {
                 container ('gcp-sdk'){
                     unstash 'query-results'
                     sh '''
-                        gcloud auth activate-refresh-token "1//05-e4NNJAWHHqCgYIARAAGAUSNwF-L9IrVLWOP5YdBmPk4qhz6hV-MbC6mP5v-EH9jvlZi5WUtJvv4JBnRJHBTzdDvY8TyJG9eG0"
+                        gcloud auth activate-refresh-token="$GOOGLE_OAUTH_TOKEN_CREDS"
                         gcloud config set core-flow-research
                         gsutil cp query.txt gs://tjohns-mysql-dump/query-results/
                     '''
