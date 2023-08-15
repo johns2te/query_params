@@ -12,7 +12,7 @@ pipeline {
     }
     environment {
         MYSQL_CREDS=credentials('mysql')
-        GOOGLE_OAUTH_TOKEN_FILE=credentials('gcloud')
+        //GOOGLE_OAUTH_TOKEN_FILE=credentials('gcloud')
     }
 
     stages {
@@ -66,6 +66,7 @@ pipeline {
             }
             steps {
                 container ('gcp-sdk'){
+                    sleep 600
                     withCredentials([file(credentialsId: 'gcloud', variable: 'GOOGLE_OAUTH_TOKEN_FILE')])
                     unstash 'query-results'
                     sh 'gcloud auth activate-access-token "$GOOGLE_OAUTH_TOKEN"'
