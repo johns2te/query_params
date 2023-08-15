@@ -69,7 +69,7 @@ pipeline {
                     //sleep 600
                     unstash 'query-results'
                     sh 'gcloud auth activate-access-token "$GOOGLE_AUTH_TOKEN"'
-                    sh "gsutil cp query.txt gs://tjohns-mysql-dump/query-results/"*/
+                    sh "gsutil cp query.txt gs://tjohns-mysql-dump/query-results/"
                 }
             }
         }
