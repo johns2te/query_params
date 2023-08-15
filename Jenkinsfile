@@ -1,7 +1,8 @@
 import groovy.sql.Sql
 
 library 'cb-days@master'
-def testPodYaml = libraryResource 'podtemplates/mysql.yml'
+def mysqlPodYaml = libraryResource 'podtemplates/mysql.yml'
+def gcpPodYaml = libraryResource 'podtemplates/cloud-run.yml'
 pipeline {
     agent none
     environment {
@@ -14,7 +15,7 @@ pipeline {
             agent {
                 kubernetes {
                     label 'mysql'
-                    yaml testPodYaml
+                    yaml mysqlPodYaml
                 }
             }
             steps {
@@ -52,10 +53,17 @@ pipeline {
             }
         }
         stage('Transfer to Master') {
+            agent {
+                kubernetes {
+                    label 'gcpsql'
+                    yaml gcpPodYaml
+                }
             steps {
-                unstash 'query-results'
-                sh "gcloud auth activate-service-account --key-file=$GBUCKET_CREDS_PSW"
-                sh "gsutil cp /home/jenkins/agent/workspace/mysql-test/query.txt gs://tjohns-mysql-dump/query-results/"
+                container ('gcp-sdk'){
+                    unstash 'query-results'
+                    sh "gcloud auth activate-service-account --key-file=$GBUCKET_CREDS_PSW"
+                    sh "gsutil cp /home/jenkins/agent/workspace/mysql-test/query.txt gs://tjohns-mysql-dump/query-results/"
+                }
             }
         }
     }
