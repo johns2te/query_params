@@ -55,7 +55,7 @@ pipeline {
         stage('Transfer to GCP Bucket') {
             agent {
                 kubernetes {
-                    label 'gcpsql'
+                    label 'cloud-run-pod'
                     yaml gcpPodYaml
                 }
             }
