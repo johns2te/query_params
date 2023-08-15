@@ -7,7 +7,7 @@ pipeline {
     agent none
     environment {
         MYSQL_CREDS=credentials('mysql')
-        GBUCKET_CREDS=credentials('gbucket')
+        //GBUCKET_CREDS=credentials('gbucket')
     }
 
     stages {
