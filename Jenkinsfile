@@ -12,7 +12,7 @@ pipeline {
     }
     environment {
         MYSQL_CREDS=credentials('mysql')
-        //GOOGLE_OAUTH_TOKEN_CREDS=credentials('gcloud')
+        GOOGLE_OAUTH_TOKEN_CREDS=credentials('gcloud')
     }
 
     stages {
