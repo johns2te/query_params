@@ -52,7 +52,7 @@ pipeline {
                 }
             }
         }
-        stage('Transfer to GCP Bucket') {
+        /*stage('Transfer to GCP Bucket') {
             agent {
                 kubernetes {
                     label 'cloud-run-pod'
@@ -70,6 +70,6 @@ pipeline {
                     '''
                 }
             }
-        }
+        */}
     }
 }
