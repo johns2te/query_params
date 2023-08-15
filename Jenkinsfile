@@ -14,7 +14,7 @@ pipeline {
         stage('Get Params from MYSQL') {
             agent {
                 kubernetes {
-                    node('mysql')
+                    label 'mysql'
                     yaml mysqlPodYaml
                 }
             }
@@ -55,7 +55,7 @@ pipeline {
         stage('Transfer to GCP Bucket') {
             agent {
                 kubernetes {
-                    node('cloud-run-pod')
+                    label 'cloud-run-pod'
                     yaml gcpPodYaml
                 }
             }
