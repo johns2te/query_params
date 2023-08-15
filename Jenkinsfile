@@ -62,7 +62,7 @@ pipeline {
             steps {
                 container ('gcp-sdk'){
                     unstash 'query-results'
-                    sh 'gcloud auth activate-refresh-token --oauth2_access_token="$GOOGLE_OAUTH_TOKEN"'
+                    sh 'gcloud auth activate-access-token "$GOOGLE_OAUTH_TOKEN"'
                     sh "gsutil cp query.txt gs://tjohns-mysql-dump/query-results/"
                 }
             }
