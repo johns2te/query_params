@@ -29,9 +29,9 @@ pipeline {
                     sh'ls -l /home/jenkins/agent/workspace/mysql-test/query.txt'
                     stash name: 'query-results', includes: 'query.txt'
                     
-                    script {
-                        sh "gcloud auth activate-service-account --key-file=$GBUCKET_CREDS_PSW"
-                        sh "gsutil cp /home/jenkins/agent/workspace/mysql-test/query.txt gs://tjohns-mysql-dump/query-results/'"
+                    //script {
+                       //sh "gcloud auth activate-service-account --key-file=$GBUCKET_CREDS_PSW"
+                        //sh "gsutil cp /home/jenkins/agent/workspace/mysql-test/query.txt gs://tjohns-mysql-dump/query-results/'"
 
                         /*def credentialsId = env.GBUCKET_CREDS_PSW // Set your credentials ID
                         def bucketName = 'tjohns-mysql-dump'
@@ -46,9 +46,16 @@ pipeline {
                         )
                         */
                         
-                }
+                //}
                     
                 }
+            }
+        }
+        stage('Transfer to Master') {
+            steps {
+                unstash 'query-results'
+                sh "gcloud auth activate-service-account --key-file=$GBUCKET_CREDS_PSW"
+                sh "gsutil cp /home/jenkins/agent/workspace/mysql-test/query.txt gs://tjohns-mysql-dump/query-results/
             }
         }
     }
