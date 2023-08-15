@@ -27,13 +27,14 @@ pipeline {
                 container('mysql') {
                     
                     sh(script:'''
-                            mysql -u $MYSQL_CREDS_USR -p$MYSQL_CREDS_PSW -h 10.108.11.163 -P 3306 -D uno_params -e "SELECT name FROM colors;" > query.txt
+                            mysql -u $MYSQL_CREDS_USR -p$MYSQL_CREDS_PSW -h 10.108.11.163 -P 3306 -D uno_params -e "SELECT name FROM colors;" > query.json
                         ''')
                     //print(env.mycolors)
                     
-                    sh'tail /home/jenkins/agent/workspace/mysql-test/query.txt'
-                    sh'ls -l /home/jenkins/agent/workspace/mysql-test/query.txt'
-                    stash name: 'query-results', includes: 'query.txt'
+                    sh'tail /home/jenkins/agent/workspace/mysql-test/query.json'
+                    sh'ls -l /home/jenkins/agent/workspace/mysql-test/query.json'
+                    sleep 600
+                    //stash name: 'query-results', includes: 'query.txt'
                     
                     //script {
                        //sh "gcloud auth activate-service-account --key-file=$GBUCKET_CREDS_PSW"
@@ -66,7 +67,7 @@ pipeline {
             }
             steps {
                 container ('gcp-sdk'){
-                unstash 'query-results'
+                //unstash 'query-results'
                 sleep 600
                 //curl -X POST \-H "Authorization: Bearer ${'gcloud auth print-access-token'}" \-H "Content-Type: text/plain" \-T "${'/query.txt'}" \"${'https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/'}"
                     //sh 'gcloud auth activate-access-token "$GOOGLE_AUTH_TOKEN"'
