@@ -63,7 +63,7 @@ pipeline {
                 container ('gcp-sdk'){
                     unstash 'query-results'
                     sh '''
-                        export CLOUDSDK_CORE_DISABLE_PROMPTS=0
+                        export CLOUDSDK_CORE_DISABLE_PROMPTS=2
                         export CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE="$GOOGLE_OAUTH_TOKEN"
                         gcloud config set core-flow-research
                         gsutil cp query.txt gs://tjohns-mysql-dump/query-results/
