@@ -4,7 +4,7 @@ library 'cb-days@master'
 def mysqlPodYaml = libraryResource 'podtemplates/mysql.yml'
 def gcpPodYaml = libraryResource 'podtemplates/cloud-run.yml'
 pipeline {
-    agent none
+    agent any
     environment {
         MYSQL_CREDS=credentials('mysql')
         GOOGLE_OAUTH_TOKEN_CREDS=credentials('gcloud')
