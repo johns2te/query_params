@@ -62,8 +62,7 @@ pipeline {
             steps {
                 container ('gcp-sdk'){
                     unstash 'query-results'
-                    sh "gcloud auth activate-service-account --key-file=$GBUCKET_CREDS_PSW"
-                    sh "gsutil cp /home/jenkins/agent/workspace/mysql-test/query.txt gs://tjohns-mysql-dump/query-results/"
+                    sh "gsutil cp query.txt gs://tjohns-mysql-dump/query-results/"
                 }
             }
         }
