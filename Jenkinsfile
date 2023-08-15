@@ -5,6 +5,11 @@ def mysqlPodYaml = libraryResource 'podtemplates/mysql.yml'
 def gcpPodYaml = libraryResource 'podtemplates/cloud-run.yml'
 pipeline {
     agent none
+    options { 
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        skipDefaultCheckout true
+        preserveStashes(buildCount: 10)
+    }
     environment {
         MYSQL_CREDS=credentials('mysql')
         GOOGLE_OAUTH_TOKEN_CREDS=credentials('gcloud')
