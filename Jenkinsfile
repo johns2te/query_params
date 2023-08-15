@@ -67,10 +67,10 @@ pipeline {
             steps {
                 container ('gcp-sdk'){
                     sleep 600
-                    withCredentials([file(credentialsId: 'gcloud', variable: 'GOOGLE_OAUTH_TOKEN_FILE')])
+                    /*withCredentials([file(credentialsId: 'gcloud', variable: 'GOOGLE_OAUTH_TOKEN_FILE')])
                     unstash 'query-results'
                     sh 'gcloud auth activate-access-token "$GOOGLE_OAUTH_TOKEN"'
-                    sh "gsutil cp query.txt gs://tjohns-mysql-dump/query-results/"
+                    sh "gsutil cp query.txt gs://tjohns-mysql-dump/query-results/"*/
                 }
             }
         }
