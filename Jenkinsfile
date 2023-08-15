@@ -71,7 +71,7 @@ pipeline {
                 //curl -X POST \-H "Authorization: Bearer ${'gcloud auth print-access-token'}" \-H "Content-Type: text/plain" \-T "${'/query.txt'}" \"${'https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/'}"
                     //sh 'gcloud auth activate-access-token "$GOOGLE_AUTH_TOKEN"'
                     //sh "gsutil cp query.txt gs://tjohns-mysql-dump/query-results/"
-                //}
+                }
             }
         }
     }
