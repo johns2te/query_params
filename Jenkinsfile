@@ -2,7 +2,7 @@ import groovy.sql.Sql
 
 library 'cb-days@master'
 def mysqlPodYaml = libraryResource 'podtemplates/mysql.yml'
-def gcpPodYaml = libraryResource 'podtemplates/cloud-run.yml'
+//def gcpPodYaml = libraryResource 'podtemplates/cloud-run.yml'
 pipeline {
     agent none
     environment {
@@ -52,7 +52,7 @@ pipeline {
                 }
             }
         }
-        stage('Transfer to GCP Bucket') {
+        /*stage('Transfer to GCP Bucket') {
             agent {
                 kubernetes {
                     label 'gcpsql'
@@ -69,6 +69,6 @@ pipeline {
                     '''
                 }
             }
-        }
+        }*/
     }
 }
