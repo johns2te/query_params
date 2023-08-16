@@ -49,11 +49,12 @@ pipeline {
             steps {
                 container ('gcp-sdk'){
                     script{
-                        def bearer_token = sh(script: 'gcloud auth print-access-token', returnStdout: true).trim()
                         unstash 'query-results'
+                        def bearerToken = sh(script: 'gcloud auth print-access-token', returnStdout: true).trim()
+                        def absolutePath = sh(script: 'pwd', returnStdout: true).trim()
                         sh 'cat query.json'
                         //sh 'curl -X GET -H "Authorization: Bearer ${bearer_token}" -o "mysql.yml" "https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/mysql.yml"'
-                        sh 'curl -X PUT -H "Authorization: Bearer ${bearer_token}" -T "query.json" "https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/query.json"'
+                        sh 'curl -X PUT -H "Authorization: Bearer ${bearerToken}" -T "${absolutePath}/query.json" "https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/query.json"'
 
 
                     //sh 'gcloud auth activate-access-token "$GOOGLE_AUTH_TOKEN"'
