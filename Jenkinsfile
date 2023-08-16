@@ -12,6 +12,7 @@ pipeline {
     }
     environment {
         MYSQL_CREDS=credentials('mysql')
+        GCP_BEARER_TOKEN= ""
         //GOOGLE_AUTH_TOKEN=credentials('gcloud-auth')
     }
 
@@ -67,9 +68,11 @@ pipeline {
             }
             steps {
                 container ('gcp-sdk'){
+                    GCP_BEARER_TOKEN = sh(script: 'gcloud auth print-access-token', returnStdout: true).trim()
                 //unstash 'query-results'
-                sleep 600
-                //curl -X POST \-H "Authorization: Bearer ${'gcloud auth print-access-token'}" \-H "Content-Type: text/plain" \-T "${'/query.txt'}" \"${'https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/'}"
+                    //sleep 600
+                    curl --location 'https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/' \
+--header 'Authorization: Bearer ${env.GCP_BEARER_TOKEN}'
                     //sh 'gcloud auth activate-access-token "$GOOGLE_AUTH_TOKEN"'
                     //sh "gsutil cp query.txt gs://tjohns-mysql-dump/query-results/"
                 }
