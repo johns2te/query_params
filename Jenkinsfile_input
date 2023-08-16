@@ -4,7 +4,7 @@ def QUERY_RESULTS = [
     ["ENV": "DEV", "IMAGE": "buster", "VERSION": "1.6.2"]
 ]
 
-def image_version_Choices = QUERY_RESULTS.collect { it.IMAGE, it.VERSION }
+def image_version_Choices = QUERY_RESULTS.collect { "${it.IMAGE} - ${it.VERSION}" }
 
 pipeline {
     agent any
