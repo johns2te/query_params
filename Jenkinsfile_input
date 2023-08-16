@@ -1,36 +1,38 @@
+def QUERY_RESULTS = [
+    ["ENV": "DEV", "IMAGE": "jdk8-slim", "VERSION": "1.0"],
+    ["ENV": "DEV", "IMAGE": "alpine", "VERSION": "1.2"],
+    ["ENV": "DEV", "IMAGE": "buster", "VERSION": "1.6.2"]
+]
+
+def imageChoices = QUERY_RESULTS.collect { it.IMAGE }
+def versionChoices = QUERY_RESULTS.collect { it.VERSION }
+
 pipeline {
     agent any
+
+    parameters {
+        choice(
+            choices: imageChoices.join('\n'),
+            description: 'Select an image:',
+            name: 'SELECTED_IMAGE'
+        )
+        
+        choice(
+            choices: versionChoices.join('\n'),
+            description: 'Select a version:',
+            name: 'SELECTED_VERSION'
+        )
+    }
     
     stages {
-        stage('Input') {
+        stage('Parameters') {
             steps {
                 script {
-                    def QUERY_RESULTS = [
-                        ["ENV": "DEV", "IMAGE": "jdk8-slim", "VERSION": "1.0"],
-                        ["ENV": "DEV", "IMAGE": "alpine", "VERSION": "1.2"],
-                        ["ENV": "DEV", "IMAGE": "buster", "VERSION": "1.6.2"]
-                    ]
+                    def selectedImage = params.SELECTED_IMAGE
+                    def selectedVersion = params.SELECTED_VERSION
                     
-                    // Create a list of image names and versions
-                    def imageList = QUERY_RESULTS.collect { it.IMAGE }
-                    def versionList = QUERY_RESULTS.collect { it.VERSION }
-                    
-                    // Input step for selecting an image
-                    def selectedImage = input(
-                        id: 'selectImage',
-                        message: 'Select an image:',
-                        parameters: [choice(name: 'IMAGE', choices: imageList, description: 'Choose an image')]
-                    )
-                    
-                    // Input step for selecting a version
-                    def selectedVersion = input(
-                        id: 'selectVersion',
-                        message: 'Select a version:',
-                        parameters: [choice(name: 'VERSION', choices: versionList, description: 'Choose a version')]
-                    )
-                    
-                    echo "Selected Image: ${selectedImage.IMAGE}"
-                    echo "Selected Version: ${selectedVersion.VERSION}"
+                    echo "Selected Image: ${selectedImage}"
+                    echo "Selected Version: ${selectedVersion}"
                 }
             }
         }
