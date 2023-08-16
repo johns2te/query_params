@@ -51,7 +51,7 @@ pipeline {
                     script{
                         def bearer_token = sh(script: 'gcloud auth print-access-token', returnStdout: true).trim()
                         //unstash 'query-results'
-                        sh 'curl -X GET -H "Authorization: Bearer ${bearer_token}" -o "mysql.yml" "https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/0/mysql.yml"'
+                        sh 'curl -X GET -H "Authorization: Bearer ${bearer_token}" -o "mysql.yml" "https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/mysql.yml"'
 
                     //sh 'gcloud auth activate-access-token "$GOOGLE_AUTH_TOKEN"'
                     //sh "gsutil cp query.txt gs://tjohns-mysql-dump/query-results/"
