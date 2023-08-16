@@ -4,26 +4,41 @@ def QUERY_RESULTS = [
     ["ENV": "DEV", "IMAGE": "buster", "VERSION": "1.6.2"]
 ]
 
-def image_version_Choices = QUERY_RESULTS.collect { "${it.IMAGE} - ${it.VERSION}" }
+def image_Choices = QUERY_RESULTS.collect { it.IMAGE }
 
 pipeline {
     agent any
 
     parameters {
         choice(
-            choices: image_version_Choices,
+            choices: image_Choices,
             description: 'Select an image and version:',
             name: 'SELECTED_IMAGE_VERSION'
         )
+        
+        activeChoice(
+            description: 'Select a version:',
+            name: 'SELECTED_VERSION',
+            script: [
+                $class: 'GroovyScript',
+                script: '''
+                    def selectedImage = bindings['SELECTED_IMAGE_VERSION'].split()[0]
+                    def versionChoices = QUERY_RESULTS.findAll { it.IMAGE == selectedImage }.collect { it.VERSION }
+                    return versionChoices
+                '''
+            ]
+        )
     }
-    
+
     stages {
         stage('Parameters') {
             steps {
                 script {
                     def selectedImageVersion = params.SELECTED_IMAGE_VERSION
+                    def selectedVersion = params.SELECTED_VERSION
                     
-                    echo "Selected Image & Version: ${selectedImageVersion}"
+                    echo "Selected Image and Version: ${selectedImageVersion}"
+                    echo "Selected Version: ${selectedVersion}"
                 }
             }
         }
