@@ -4,23 +4,16 @@ def QUERY_RESULTS = [
     ["ENV": "DEV", "IMAGE": "buster", "VERSION": "1.6.2"]
 ]
 
-def imageChoices = QUERY_RESULTS.collect { it.IMAGE }
-def versionChoices = QUERY_RESULTS.collect { it.VERSION }
+def image_version_Choices = QUERY_RESULTS.collect { it.IMAGE, it.VERSION }
 
 pipeline {
     agent any
 
     parameters {
         choice(
-            choices: imageChoices,
-            description: 'Select an image:',
-            name: 'SELECTED_IMAGE'
-        )
-        
-        choice(
-            choices: versionChoices,
-            description: 'Select a version:',
-            name: 'SELECTED_VERSION'
+            choices: image_version_Choices,
+            description: 'Select an image and version:',
+            name: 'SELECTED_IMAGE_VERSION'
         )
     }
     
@@ -28,11 +21,9 @@ pipeline {
         stage('Parameters') {
             steps {
                 script {
-                    def selectedImage = params.SELECTED_IMAGE
-                    def selectedVersion = params.SELECTED_VERSION
+                    def selectedImageVersion = params.SELECTED_IMAGE_VERSION
                     
-                    echo "Selected Image: ${selectedImage}"
-                    echo "Selected Version: ${selectedVersion}"
+                    echo "Selected Image & Version: ${selectedImageVersion}"
                 }
             }
         }
