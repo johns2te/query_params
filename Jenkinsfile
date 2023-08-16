@@ -17,6 +17,7 @@ pipeline {
     
     stages {
         stage('Set Bearer Token') {
+            agent any
             steps {
                 script {
                     sh 'whoami'
