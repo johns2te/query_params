@@ -6,68 +6,72 @@ def QUERY_RESULTS = [
 
 def imageChoices = QUERY_RESULTS.collect { it.IMAGE }
 
+def choiceParameter = [
+    $class: 'ChoiceParameter',
+    choiceType: 'PT_SINGLE_SELECT',
+    description: 'Select an image:',
+    filterLength: 1,
+    filterable: true,
+    name: 'SELECTED_IMAGE',
+    randomName: 'choice-parameter-431960510873982',
+    script: [
+        $class: 'GroovyScript',
+        fallbackScript: [
+            classpath: [],
+            sandbox: false,
+            script: 'return ["Error: No choice provided"]'
+        ],
+        script: [
+            classpath: [],
+            sandbox: false,
+            script: '''
+                return ${imageChoices.inspect()}
+            '''
+        ],
+        selectedValue: 'jdk8-slim',
+        target: [
+            name: 'SELECTED_IMAGE'
+        ]
+    ]
+]
+
+def cascadeChoiceParameter = [
+    $class: 'CascadeChoiceParameter',
+    projectName: '',
+    referencedParameters: 'SELECTED_IMAGE',
+    description: 'Select a version:',
+    name: 'SELECTED_VERSION',
+    randomName: 'choice-parameter-91387418923652',
+    script: [
+        $class: 'GroovyScript',
+        fallbackScript: [
+            classpath: [],
+            sandbox: false,
+            script: 'return ["Error: No choice provided"]'
+        ],
+        script: [
+            classpath: [],
+            sandbox: false,
+            script: '''
+                def selectedImage = bindings['SELECTED_IMAGE']
+                def versionChoices = ${QUERY_RESULTS.inspect()}.
+                    findAll { it.IMAGE == selectedImage }.
+                    collect { it.VERSION }
+                return versionChoices
+            '''
+        ],
+        selectedValue: '',
+        target: [
+            name: 'SELECTED_VERSION'
+        ]
+    ]
+]
+
 pipeline {
     agent any
 
-    parameters([
-        [$class: 'ChoiceParameter',
-         choiceType: 'PT_SINGLE_SELECT',
-         description: 'Select an image:',
-         filterLength: 1,
-         filterable: true,
-         name: 'SELECTED_IMAGE',
-         randomName: 'choice-parameter-431960510873982',
-         script: [
-            $class: 'GroovyScript',
-            fallbackScript: [
-                classpath: [],
-                sandbox: false,
-                script: 'return ["Error: No choice provided"]'
-            ],
-            script: [
-                classpath: [],
-                sandbox: false,
-                script: '''
-                    return ${imageChoices.inspect()}
-                '''
-            ],
-            selectedValue: 'jdk8-slim',
-            target: [
-                name: 'SELECTED_IMAGE'
-            ]
-        ]],
-        
-        [$class: 'CascadeChoiceParameter',
-         projectName: '',
-         referencedParameters: 'SELECTED_IMAGE',
-         description: 'Select a version:',
-         name: 'SELECTED_VERSION',
-         randomName: 'choice-parameter-91387418923652',
-         script: [
-            $class: 'GroovyScript',
-            fallbackScript: [
-                classpath: [],
-                sandbox: false,
-                script: 'return ["Error: No choice provided"]'
-            ],
-            script: [
-                classpath: [],
-                sandbox: false,
-                script: '''
-                    def selectedImage = bindings['SELECTED_IMAGE']
-                    def versionChoices = ${QUERY_RESULTS.inspect()}.
-                        findAll { it.IMAGE == selectedImage }.
-                        collect { it.VERSION }
-                    return versionChoices
-                '''
-            ],
-            selectedValue: '',
-            target: [
-                name: 'SELECTED_VERSION'
-            ]
-        ]]
-    ])
-    
+    parameters([choiceParameter, cascadeChoiceParameter])
+
     stages {
         stage('Parameters') {
             steps {
