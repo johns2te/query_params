@@ -58,10 +58,10 @@ pipeline {
                 container ('gcp-sdk'){
                     script{
                         unstash 'query-results'
-                        def bearerToken = sh(script: 'gcloud auth print-access-token', returnStdout: true).trim()
+                        def bearerToken = "ya29.a0AfB_byB0fC2IOCwjQ9CbX_tfoo9uKhTX0g4cvnzZ-0hzvybvk4Ed5Q5dvilsHFUOFQjVTLoW4iC7XLkI-o7j5TJIRApNVXyZJK1naQwbVcnet1-_9UVPc-Vf-EgM-mw2Vz7k1IESTr_m5KoSchSvYmCZHQCN6m3JzRny0wHFrYbjr8QuoEWw7ruLQ3u5aAlL0ozg2ags0jAtgEpKskO9CqEdI6Ni_PzW0rUiGI-D4XEw7LF6EwjczDXM-JWPOL4LhYpQSyok1GyfL__MUYcKECK4a7Bv1eunxqzKYv_q-5uBvE25eAVgHspN7PaHDAqGAM1lYLl_IAZ1SzaboBTZqvsqelBmummkTM3gTfjcA_TfvPW_Nfoot6ohdAgTDIuK8eEg6yuZ64ex2BISaOM6WPvoLBAaCgYKAccSARISFQHsvYlsdY2SICnBdT7rEqhEIWvnGA0418"
                         //sleep 600
-                        sh 'curl -X GET -H "Authorization: ${GOOGLE_AUTH_TOKEN}" "https://www.googleapis.com/storage/v1/b/tjohns-mysql-dump/"'
-                        //sh 'curl -X POST -T /home/jenkins/agent/workspace/mysql-test/query.json -H "Authorization: Bearer ${bearerToken}" -H "Content-Type: application/json" "https://storage.googleapis.com/upload/storage/v1/b/tjohns-mysql-dump/o?uploadType=media&name=query.json"'
+                        //sh 'curl -X GET -H "Authorization: ${bearer}" "https://www.googleapis.com/storage/v1/b/tjohns-mysql-dump/"'
+                        sh 'curl -X POST -T /home/jenkins/agent/workspace/mysql-test/query.json -H "Authorization: Bearer ${bearerToken}" -H "Content-Type: application/json" "https://storage.googleapis.com/upload/storage/v1/b/tjohns-mysql-dump/o?uploadType=media&name=query.json"'
                         //sh 'curl -X PUT -H "Authorization: Bearer ${bearerToken}" -T "/home/jenkins/agent/workspace/mysql-test/query.json" "https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/query.json"'
 
 
