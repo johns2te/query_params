@@ -6,7 +6,6 @@ def QUERY_RESULTS = [
 ]
 
 def imageChoices = QUERY_RESULTS.collect { it.IMAGE }
-def versionChoices = QUERY_RESULTS.collect { it.VERSION }
 
 pipeline {
     agent any
