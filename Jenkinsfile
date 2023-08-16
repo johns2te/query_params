@@ -35,7 +35,7 @@ pipeline {
                 container('mysql') {
             
                     sh(script:'''
-                            mysql -u $MYSQL_CREDS_USR -p$MYSQL_CREDS_PSW -h 10.108.11.163 -P 3306 -D uno_params -e "SELECT * FROM inventory WHERE environment = 'DEV';" > query.json
+                            mysql -u $MYSQL_CREDS_USR -p$MYSQL_CREDS_PSW -h 10.108.11.163 -P 3306 -D uno_params -e "SELECT JSON_OBJECT('ENV', environment, 'IMAGE', image, 'VERSION', version) FROM inventory WHERE environment = 'DEV';" > query.json
                         ''')
                     //print(env.mycolors)
                     
