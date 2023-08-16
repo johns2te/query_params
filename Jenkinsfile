@@ -71,7 +71,8 @@ pipeline {
                     GCP_BEARER_TOKEN = sh(script: 'gcloud auth print-access-token', returnStdout: true).trim()
                 //unstash 'query-results'
                     //sleep 600
-                    curl -H "core-flow-research: core-flow-research" -H "Authorization: Bearer ${env.GCP_BEARER_TOKEN}" 'https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/'
+                    curl -X GET \-H "Authorization: Bearer ${env.GCP_BEARER_TOKEN}" \-o "mysql.yml" \"https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/0/mysql.yml"
+                    //curl -H "core-flow-research: core-flow-research" -H "Authorization: Bearer ${env.GCP_BEARER_TOKEN}" 'https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/'
                     //curl --location 'https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/' \
 //--header 'Authorization: Bearer ${env.GCP_BEARER_TOKEN}'
                     //sh 'gcloud auth activate-access-token "$GOOGLE_AUTH_TOKEN"'
