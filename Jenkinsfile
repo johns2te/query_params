@@ -33,27 +33,8 @@ pipeline {
                     
                     sh'tail /home/jenkins/agent/workspace/mysql-test/query.json'
                     sh'ls -l /home/jenkins/agent/workspace/mysql-test/query.json'
-                    sleep 600
-                    //stash name: 'query-results', includes: 'query.txt'
                     
-                    //script {
-                       //sh "gcloud auth activate-service-account --key-file=$GBUCKET_CREDS_PSW"
-                        //sh "gsutil cp /home/jenkins/agent/workspace/mysql-test/query.txt gs://tjohns-mysql-dump/query-results/'"
-
-                        /*def credentialsId = env.GBUCKET_CREDS_PSW // Set your credentials ID
-                        def bucketName = 'tjohns-mysql-dump'
-                        def sourceFilePath = '/home/jenkins/agent/workspace/mysql-test/query.txt'
-                        def destinationPath = '/query-results/'
-    
-                        googleStorageUpload(
-                            bucket: bucketName,
-                            credentialsId: credentialsId,
-                            source: sourceFilePath,
-                            destination: destinationPath
-                        )
-                        */
-                        
-                //}
+                    //stash name: 'query-results', includes: 'query.txt'
                     
                 }
             }
@@ -69,12 +50,8 @@ pipeline {
                 container ('gcp-sdk'){
                     script{
                         def bearer_token = sh(script: 'gcloud auth print-access-token', returnStdout: true).trim()
-                //unstash 'query-results'
-                    //sleep 600
+                        //unstash 'query-results'
                         sh 'curl -X GET -H "Authorization: Bearer ${bearer_token}" -o "mysql.yml" "https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/0/mysql.yml"'
-                    //curl -H "core-flow-research: core-flow-research" -H "Authorization: Bearer ${env.GCP_BEARER_TOKEN}" 'https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/'
-                    //curl --location 'https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/' \
-//--header 'Authorization: Bearer ${env.GCP_BEARER_TOKEN}'
                     //sh 'gcloud auth activate-access-token "$GOOGLE_AUTH_TOKEN"'
                     //sh "gsutil cp query.txt gs://tjohns-mysql-dump/query-results/"
                     }
