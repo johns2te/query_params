@@ -68,7 +68,7 @@ pipeline {
             }
             steps {
                 container ('gcp-sdk'){
-                    GCP_BEARER_TOKEN = sh(script: 'gcloud auth print-access-token', returnStdout: true).trim()
+                    env.GCP_BEARER_TOKEN = sh(script: 'gcloud auth print-access-token', returnStdout: true).trim()
                 //unstash 'query-results'
                     //sleep 600
                     sh 'curl -X GET -H "Authorization: Bearer ${env.GCP_BEARER_TOKEN}" -o "mysql.yml" "https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/0/mysql.yml"'
