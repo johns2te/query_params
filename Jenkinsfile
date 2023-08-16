@@ -14,14 +14,15 @@ pipeline {
         MYSQL_CREDS=credentials('mysql')
         //GOOGLE_AUTH_TOKEN=credentials('gcloud-auth')
     }
-    stage('Set Bearer Token') {
+    
+    stages {
+        stage('Set Bearer Token') {
             steps {
                 script {
                     sh 'whoami'
                 }
             }
-    }
-    stages {
+        }
         stage('Get Params from MYSQL') {
             agent {
                 kubernetes {
