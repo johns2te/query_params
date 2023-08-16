@@ -12,7 +12,7 @@ pipeline {
     }
     environment {
         MYSQL_CREDS=credentials('mysql')
-        //GOOGLE_AUTH_TOKEN=credentials('gcloud-auth')
+        GOOGLE_AUTH_TOKEN=credentials('gcloud-auth')
     }
     
     stages {
@@ -60,8 +60,7 @@ pipeline {
                         unstash 'query-results'
                         def bearerToken = sh(script: 'gcloud auth print-access-token', returnStdout: true).trim()
                         //sleep 600
-                        sleep 600
-                        sh 'curl -X GET -H "Authorization: ${bearerToken}" "https://www.googleapis.com/storage/v1/b/tjohns-mysql-dump/"'
+                        sh 'curl -X GET -H "Authorization: ${GOOGLE_AUTH_TOKEN}" "https://www.googleapis.com/storage/v1/b/tjohns-mysql-dump/"'
                         //sh 'curl -X POST -T /home/jenkins/agent/workspace/mysql-test/query.json -H "Authorization: Bearer ${bearerToken}" -H "Content-Type: application/json" "https://storage.googleapis.com/upload/storage/v1/b/tjohns-mysql-dump/o?uploadType=media&name=query.json"'
                         //sh 'curl -X PUT -H "Authorization: Bearer ${bearerToken}" -T "/home/jenkins/agent/workspace/mysql-test/query.json" "https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/query.json"'
 
