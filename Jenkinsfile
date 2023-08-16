@@ -52,7 +52,7 @@ pipeline {
                         unstash 'query-results'
                         def bearerToken = sh(script: 'gcloud auth print-access-token', returnStdout: true).trim()
                         //sleep 600
-                        sh 'ls -a'
+                        sh 'whoami'
                         //sleep 600
                         sh 'curl -X GET -H "Authorization: ${bearerToken}" "https://www.googleapis.com/storage/v1/b/tjohns-mysql-dump/o"'
                         //sh 'curl -X POST -T /home/jenkins/agent/workspace/mysql-test/query.json -H "Authorization: Bearer ${bearerToken}" -H "Content-Type: application/json" "https://storage.googleapis.com/upload/storage/v1/b/tjohns-mysql-dump/o?uploadType=media&name=query.json"'
