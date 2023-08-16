@@ -34,7 +34,7 @@ pipeline {
                     sh'tail /home/jenkins/agent/workspace/mysql-test/query.json'
                     sh'ls -l /home/jenkins/agent/workspace/mysql-test/query.json'
                     
-                    //stash name: 'query-results', includes: 'query.txt'
+                    stash name: 'query-results', includes: 'query.txt'
                     
                 }
             }
@@ -50,7 +50,8 @@ pipeline {
                 container ('gcp-sdk'){
                     script{
                         def bearer_token = sh(script: 'gcloud auth print-access-token', returnStdout: true).trim()
-                        //unstash 'query-results'
+                        unstash 'query-results'
+                        sh 'cat file.txt'
                         sh 'curl -X GET -H "Authorization: Bearer ${bearer_token}" -o "mysql.yml" "https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/mysql.yml"'
 
                     //sh 'gcloud auth activate-access-token "$GOOGLE_AUTH_TOKEN"'
