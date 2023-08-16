@@ -24,18 +24,6 @@ pipeline {
         )
     }
 
-    stages {
-        stage('Set Version Choices') {
-            steps {
-                script {
-                    def selectedImage = params.SELECTED_IMAGE
-                    def versionChoices = QUERY_RESULTS.findAll { it.IMAGE == selectedImage }.collect { it.VERSION }
-                    
-                    currentBuild.rawBuild.getAction(hudson.model.ParametersAction).parameters.find { it.name == 'SELECTED_VERSION' }.choices = versionChoices.join('\n')
-                }
-            }
-        }
-
         stage('Parameters') {
             steps {
                 script {
