@@ -1,4 +1,3 @@
-
 def QUERY_RESULTS = [
     ["ENV": "DEV", "IMAGE": "jdk8-slim", "VERSION": "1.0"],
     ["ENV": "DEV", "IMAGE": "alpine", "VERSION": "1.2"],
@@ -6,6 +5,7 @@ def QUERY_RESULTS = [
 ]
 
 def imageChoices = QUERY_RESULTS.collect { it.IMAGE }
+def versionChoices = QUERY_RESULTS.collect { it.VERSION }
 
 pipeline {
     agent any
@@ -18,12 +18,13 @@ pipeline {
         )
         
         choice(
-            choices: [],
+            choices: versionChoices,
             description: 'Select a version:',
             name: 'SELECTED_VERSION'
         )
     }
-
+    
+    stages {
         stage('Parameters') {
             steps {
                 script {
