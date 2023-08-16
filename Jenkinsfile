@@ -54,8 +54,7 @@ pipeline {
                         //sleep 600
                         sh 'ls -a'
                         //sleep 600
-                        def output = sh 'curl -X GET -H "Authorization: ${bearerToken" "https://www.googleapis.com/storage/v1/b/tjohns-mysql-dump/o"'
-                        echo output
+                        sh 'curl -X GET -H "Authorization: ${bearerToken}" "https://www.googleapis.com/storage/v1/b/tjohns-mysql-dump/o"'
                         //sh 'curl -X POST -T /home/jenkins/agent/workspace/mysql-test/query.json -H "Authorization: Bearer ${bearerToken}" -H "Content-Type: application/json" "https://storage.googleapis.com/upload/storage/v1/b/tjohns-mysql-dump/o?uploadType=media&name=query.json"'
                         //sh 'curl -X PUT -H "Authorization: Bearer ${bearerToken}" -T "/home/jenkins/agent/workspace/mysql-test/query.json" "https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/query.json"'
 
