@@ -50,5 +50,4 @@ pipeline {
         }
         
         // Add more stages as needed for your pipeline
-    }
 }
