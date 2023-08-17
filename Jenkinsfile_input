@@ -28,7 +28,7 @@ String populateImages(List default_item, List devimagesList, List stageimagesLis
 return """if(Environments.equals('DEV')){
      return $devimagesList
      }
-     else if(Environment.equals('STAGE')){
+     else if(Environments.equals('STAGE')){
      return $stageimagesList
      }else{
      return $default_item
