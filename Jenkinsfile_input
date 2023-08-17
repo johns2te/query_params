@@ -25,7 +25,15 @@ String buildScript(List values){
   return "return $values"
 }
 String populateImages(List default_item, List devimagesList, List stageimagesList){
-    return Environments
+    return """if(Environments.equals('DEV')){
+     return $devimagesList
+     }
+     else if(Environments.equals('STAGE')){
+     return $stageimagesList
+     }else{
+     return $default_item
+     }
+     """
 }
 // Properties step to set the Active choice parameters via 
 // Declarative Scripting
