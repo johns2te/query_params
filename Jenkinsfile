@@ -49,7 +49,8 @@ pipeline {
                     script{
                         unstash 'query-results'
                         sh 'cat query.json'
-                        sh "gsutil cp /home/jenkins/agent/workspace/WETG/mysql-test/query.json gs://tjohns-mysql-dump/query-results/"
+                        sh "gsutil cp /home/jenkins/agent/workspace/WETG/mysql-test/query.json gs://tjohns-mysql-dump/query-results/ -a public-read"
+
 
                     //sh 'gcloud auth activate-access-token "$GOOGLE_AUTH_TOKEN"'
                     }
