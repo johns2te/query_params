@@ -12,7 +12,7 @@ def QUERY_RESULTS = [
 ]
 
 // Define variables
-List env_list = ['DEV','STAGE','PROD']
+List env_list = ["DEV","STAGE","PROD"]
 List dev_image_list = ['buster','alpine','jdk8-slim']
 List stage_image_list = ['nginx','ubuntu','tomcat']
 List default_item = ["\"Not Applicable\""]
