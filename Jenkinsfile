@@ -25,11 +25,9 @@ pipeline {
             }
             steps {
                 container('mysql') {
-                    sleep 600
                     sh(script:'''
                             mysql -u $MYSQL_CREDS_USR -p$MYSQL_CREDS_PSW -h 10.108.11.163 -P 3306 -D uno_params --skip-column-names -e "SELECT JSON_OBJECT('ENV', environment, 'IMAGE', image, 'VERSION', version) FROM inventory WHERE environment = 'DEV';" > query.json
                         ''')
-                    //print(env.mycolors)
                     
                     sh'tail /home/jenkins/agent/workspace/mysql-test/query.json'
                     sh'ls -l /home/jenkins/agent/workspace/mysql-test/query.json'
