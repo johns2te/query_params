@@ -19,12 +19,12 @@ List default_item = ["\'Not Applicable\'"]
 String environments = buildScript(env_list)
 String dev_images = buildScript(dev_image_list)
 String stage_images= buildScript(stage_image_list)
-String images = populateItems(default_item,dev_image_list,stage_image_list)
+String images = populateImages(default_item,dev_image_list,stage_image_list)
 // Methods to build groovy scripts to populate data
 String buildScript(List values){
   return "return $values"
 }
-String populateItems(List default_item, List devimagesList, List stageimagesList){
+String populateImages(List default_item, List devimagesList, List stageimagesList){
 return """if(Environments.equals('DEV')){
      return $devimagesList
      }
