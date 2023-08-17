@@ -60,7 +60,7 @@ pipeline {
                         unstash 'query-results'
                         sh 'cat query.json'
                         //sleep 600
-                        sh "gsutil cp query.txt gs://tjohns-mysql-dump/query-results/"
+                        sh "gsutil cp /home/jenkins/agent/workspace/mysql-test/query.json gs://tjohns-mysql-dump/query-results/"
                         //sh 'curl -X GET -H "Authorization: ${bearer}" "https://www.googleapis.com/storage/v1/b/tjohns-mysql-dump/"'
                         //sh 'curl -X POST -T /home/jenkins/agent/workspace/mysql-test/query.json -H "Authorization: Bearer ${bearerToken}" -H "Content-Type: application/json" "https://storage.googleapis.com/upload/storage/v1/b/tjohns-mysql-dump/o?uploadType=media&name=query.json"'
                         //sh 'curl -X PUT -H "Authorization: Bearer ${bearerToken}" -T "/home/jenkins/agent/workspace/mysql-test/query.json" "https://storage.googleapis.com/storage/v1/b/tjohns-mysql-dump/query.json"'
