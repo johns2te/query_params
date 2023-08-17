@@ -25,7 +25,10 @@ String buildScript(List values){
   return "return $values"
 }
 String populateImages(List default_item, List devimagesList, List stageimagesList){
-return """if(Environments.equals('DEV')){
+return """if(Environments.capitalize().equals('DEV')){
+     return $devimagesList
+     }
+     else if(Environments.capitilize().equals("DEV")){
      return $devimagesList
      }
      else if(Environments.equals('STAGE')){
