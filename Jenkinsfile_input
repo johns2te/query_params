@@ -16,7 +16,7 @@ List env_list = ["\'DEV\'","\'STAGE\'","\'PROD\'"]
 List dev_image_list = ["\'buster\'","\'alpine\'","\'jdk8-slim\'"]
 List stage_image_list = ["\'nginx\'","\'ubuntu\'","\'tomcat\'"]
 List default_item = ["\'Not Applicable\'"]
-String environment = buildScript(env_list)
+String environments = buildScript(env_list)
 String dev_images = buildScript(dev_image_list)
 String stage_images= buildScript(stage_image_list)
 String items = populateItems(default_item,dev_image_list,stage_image_list)
@@ -40,7 +40,7 @@ return """if(Environments.equals('DEV')){
 properties([
     parameters([
         [$class: 'ChoiceParameter', choiceType: 'PT_SINGLE_SELECT',   name: 'Environments', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["ERROR"]'], script: [classpath: [], sandbox: false, script: environments]]],
-[$class: 'CascadeChoiceParameter', choiceType: 'PT_SINGLE_SELECT',name: 'Images', referencedParameters: 'Environments', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["error"]'], script: [classpath: [], sandbox: false, script: images]]]
+[$class: 'CascadeChoiceParameter', choiceType: 'PT_SINGLE_SELECT',name: 'Images', referencedParameters: 'Environments', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["error"]'], script: [classpath: [], sandbox: false, script: items]]]
     ])
 ])
 
