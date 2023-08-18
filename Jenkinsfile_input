@@ -4,11 +4,16 @@ import groovy.json.JsonSlurper
 def url = new URL("https://storage.googleapis.com/tjohns-mysql-dump/query-results/query.json")
 def json = url.getText()
 
+String buildScript(List values){
+  return "return $values"
+}
+
 def populateImages(jsonArray, environments) {
-    def images = []
+    def list_images = []
     if (environments.contains(Environment)) {
-        images = jsonArray.findAll { it.ENV == Environment }.collect { it.IMAGE }
+        list_images = jsonArray.findAll { it.ENV == Environment }.collect { it.IMAGE }
     }
+    images = buildScript(list_images)
     return images ?: ['Not Applicable']
 }
 
