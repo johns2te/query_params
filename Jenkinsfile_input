@@ -1,35 +1,36 @@
 //hardcoded json body in real scenario this would pulled down as a json file and assigned to variable
-def QUERY_RESULTS = [
-    ["ENV": "DEV", "IMAGE": "jdk8-slim", "VERSION": "1.0"],
-    ["ENV": "DEV", "IMAGE": "alpine", "VERSION": "1.2"],
-    ["ENV": "DEV", "IMAGE": "buster", "VERSION": "1.6.2"],
-    ["ENV": "STAGE", "IMAGE": "nginx", "VERSION": "2.0"],
-    ["ENV": "STAGE", "IMAGE": "ubuntu", "VERSION": "2.3"],
-    ["ENV": "STAGE", "IMAGE": "tomcat", "VERSION": "3.1"],
-    ["ENV": "PROD", "IMAGE": "mysql", "VERSION": "5.7"],
-    ["ENV": "PROD", "IMAGE": "postgres", "VERSION": "9.6"],
-    ["ENV": "PROD", "IMAGE": "redis", "VERSION": "4.0"]
-]
+import groovy.json.JsonSlurper
+
+def url = new URL("https://storage.googleapis.com/tjohns-mysql-dump/query-results/query.json")
+def json = url.getText()
+def slurper = new JsonSlurper()
+def jsonArray = slurper.parseText(json)
 
 // Define variables
 List env_list = ["\'DEV\'","\'STAGE\'","\'PROD\'"]
-List dev_image_list = ["\'buster\'","\'alpine\'","\'jdk8-slim\'"]
-List stage_image_list = ["\'nginx\'","\'ubuntu\'","\'tomcat\'"]
 List default_item = ["\'Not Applicable\'"]
 String environments = buildScript(env_list)
-String dev_images = buildScript(dev_image_list)
-String stage_images= buildScript(stage_image_list)
-String images = populateImages(default_item,dev_image_list,stage_image_list)
+String images = populateImages(default_item)
+String versions = populateVersions(default_item)
 // Methods to build groovy scripts to populate data
 String buildScript(List values){
   return "return $values"
 }
-String populateImages(List default_item, List devimagesList, List stageimagesList){
-    return """if(Environments.equals('DEV')){
-     return $devimagesList
+String populateImages(List default_item){
+    return """if(Environments.in(environments)){
+     def imageNames = jsonArray.findAll { it.ENV == Environments }.collect { it.IMAGE }
+     return imagNames
      }
-     else if(Environments.equals('STAGE')){
-     return $stageimagesList
+     }else{
+     return $default_item
+     }
+     """
+}
+String populateVersions(List default_item){
+    return """if(Environments.in(environments)){
+     def imageVersions = jsonArray.findAll { it.ENV == Environments }.collect { it.VERSION }
+     return imageVersions
+     }
      }else{
      return $default_item
      }
