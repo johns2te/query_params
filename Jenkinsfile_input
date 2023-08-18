@@ -1,4 +1,4 @@
-library 'cb-days@master'
+library 'cb-days@main'
 
 def url = "https://storage.googleapis.com/tjohns-mysql-dump/query-results/query.json"
 def jsonArray = slurpStorage(url)
