@@ -14,7 +14,7 @@ def populateImages(jsonArray, environments) {
         list_images = jsonArray.findAll { it.ENV == Environment }.collect { it.IMAGE }
     }
     images = buildScript(list_images)
-    return images ?: ['Not Applicable']
+    return images ?: 'Not Applicable'
 }
 
 def populateVersions(jsonArray, environments, images) {
@@ -22,7 +22,7 @@ def populateVersions(jsonArray, environments, images) {
     if (environments.contains(Environment) && images.contains(Image)) {
         versions = jsonArray.findAll { it.ENV == Environment && it.IMAGE == Image }.collect { it.VERSION }
     }
-    return versions ?: ['Not Applicable']
+    return versions ?: 'Not Applicable'
 }
 
 def environments = ['DEV', 'STAGE', 'PROD']
