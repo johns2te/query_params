@@ -22,7 +22,7 @@ def populateVersions(jsonArray, environments, images) {
     return versions ?: 'Not Applicable'
 }
 
-List environments_list = ['DEV', 'STAGE', 'PROD']
+List environments_list = ["'DEV'", "'STAGE'", "'PROD'"]
 def jsonSlurper = new JsonSlurper()
 def jsonArray = jsonSlurper.parseText(json)
 
