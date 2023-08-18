@@ -10,7 +10,7 @@ String buildScript(List values){
 
 def populateImages(jsonArray, environments) {
     def list_images = []
-    list_images = jsonArray.findAll { it.ENV == "DEV" }.collect { "'$it.IMAGE'" }
+    list_images = jsonArray.findAll { it.ENV == Environment}.collect { "'$it.IMAGE'" }
     return list_images 
 }
 
