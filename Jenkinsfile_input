@@ -8,7 +8,7 @@ String buildScript(List values){
   return "return $values"
 }
 
-def populateImages(jsonArray, environments, Environment) {
+def populateImages(jsonArray, environments) {
     def list_images = []
     list_images = jsonArray.findAll { it.ENV == Environment }.collect { it.IMAGE }
     return images ?: 'Not Applicable'
@@ -27,7 +27,7 @@ def jsonSlurper = new JsonSlurper()
 def jsonArray = jsonSlurper.parseText(json)
 
 String environments = buildScript(environments_list)
-String images = buildScript(populateImages(jsonArray, environments_list, Environment))
+String images = buildScript(populateImages(jsonArray, environments_list))
 //String versions = populateVersions(jsonArray, environments, images)
 
 
