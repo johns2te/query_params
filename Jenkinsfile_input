@@ -27,7 +27,7 @@ def jsonSlurper = new JsonSlurper()
 def jsonArray = jsonSlurper.parseText(json)
 
 String environments = buildScript(environments_list)
-String images = buildScript(populateImages(jsonArray, environments_list))
+String images = populateImages(jsonArray)
 String items = populateImages(default_item,vegetables_list,fruits_list)
 String populateImages(jsonArray){
 return """
