@@ -45,7 +45,7 @@ properties([
             
             def images = jsonArray.findAll { it.ENV == environmentValue }.collect { it.IMAGE }
             return images ?: ['Not Applicable']
-        ''']]
+        ''']]]
     ])
 ])
 
