@@ -1,10 +1,7 @@
-//hardcoded json body in real scenario this would pulled down as a json file and assigned to variable
-import groovy.json.JsonSlurper
+library 'cb-days@master'
 
-def url = new URL("https://storage.googleapis.com/tjohns-mysql-dump/query-results/query.json")
-def json = url.getText()
-def slurper = new JsonSlurper()
-def jsonArray = slurper.parseText(json)
+def url = "https://storage.googleapis.com/tjohns-mysql-dump/query-results/query.json"
+def jsonArray = slurpStorage(url)
 
 // Define variables
 List env_list = ["\'DEV\'","\'STAGE\'","\'PROD\'"]
