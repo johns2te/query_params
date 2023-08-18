@@ -24,8 +24,8 @@ def environments = ['DEV', 'STAGE', 'PROD']
 def jsonSlurper = new JsonSlurper()
 def jsonArray = jsonSlurper.parseText(json)
 
-def images = ${populateImages(jsonArray, environments).inspect()}
-def versions = ${populateVersions(jsonArray, environments, images).inspect()}
+def images = populateImages(jsonArray, environments).inspect()
+def versions = populateVersions(jsonArray, environments, images).inspect()
 
 
 
