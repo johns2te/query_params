@@ -8,7 +8,7 @@ String buildScript(List values){
   return "return $values"
 }
 
-def populateImages(jsonArray, environments) {
+def populateImages(jsonArray, environments, Environment) {
     def list_images = []
     if (environments.contains(Environment)) {
         list_images = jsonArray.findAll { it.ENV == Environment }.collect { it.IMAGE }
