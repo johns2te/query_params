@@ -28,6 +28,14 @@ def jsonArray = jsonSlurper.parseText(json)
 
 String environments = buildScript(environments_list)
 String images = buildScript(populateImages(jsonArray, environments_list))
+String items = populateImages(default_item,vegetables_list,fruits_list)
+String populateImages(jsonArray){
+return """
+    def list_images = []
+    list_images = jsonArray.findAll { it.ENV == Environment}.collect { "'$it.IMAGE'" }
+    return list_images 
+     """
+}
 //String versions = populateVersions(jsonArray, environments, images)
 
 
@@ -36,7 +44,7 @@ String images = buildScript(populateImages(jsonArray, environments_list))
 properties([
     parameters([
         [$class: 'ChoiceParameter', choiceType: 'PT_SINGLE_SELECT',   name: 'Environment', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["ERROR"]'], script: [classpath: [], sandbox: false, script: environments]]],
-[$class: 'CascadeChoiceParameter', choiceType: 'PT_SINGLE_SELECT',name: 'Image', referencedParameters: 'Environment', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["error"]'], script: [classpath: [], sandbox: false, script: buildScript(populateImages(jsonArray, Environment))]]]
+[$class: 'CascadeChoiceParameter', choiceType: 'PT_SINGLE_SELECT',name: 'Image', referencedParameters: 'Environment', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["error"]'], script: [classpath: [], sandbox: false, script: images]]]
     ])
 ])
 
