@@ -10,7 +10,7 @@ String buildScript(List values){
 
 def populateImages(jsonArray, environments) {
     def list_images = []
-    list_images = jsonArray.findAll { it.ENV == "DEV" }.collect { "'$it.IMAGE'" }
+    list_images = jsonArray.findAll { it.ENV == Environment }.collect { "'$it.IMAGE'" }
     return list_images 
 }
 
@@ -36,7 +36,7 @@ String images = buildScript(populateImages(jsonArray, environments_list))
 properties([
     parameters([
         [$class: 'ChoiceParameter', choiceType: 'PT_SINGLE_SELECT',   name: 'Environment', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["ERROR"]'], script: [classpath: [], sandbox: false, script: environments]]],
-[$class: 'CascadeChoiceParameter', choiceType: 'PT_SINGLE_SELECT',name: 'Image', referencedParameters: 'Environments', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["error"]'], script: [classpath: [], sandbox: false, script: images]]]
+[$class: 'CascadeChoiceParameter', choiceType: 'PT_SINGLE_SELECT',name: 'Image', referencedParameters: 'Environment', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["error"]'], script: [classpath: [], sandbox: false, script: images]]]
     ])
 ])
 
