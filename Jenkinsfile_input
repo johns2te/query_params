@@ -29,8 +29,8 @@ List environments_list = ['DEV', 'STAGE', 'PROD']
 def jsonSlurper = new JsonSlurper()
 def jsonArray = jsonSlurper.parseText(json)
 
-String environments = buildScript(envrionments_list)
-String images = populateImages(jsonArray, environments)
+String environments = buildScript(environments_list)
+String images = populateImages(jsonArray, environments_list)
 //String versions = populateVersions(jsonArray, environments, images)
 
 
