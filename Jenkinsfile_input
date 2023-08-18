@@ -30,7 +30,7 @@ def jsonSlurper = new JsonSlurper()
 def jsonArray = jsonSlurper.parseText(json)
 
 String images = populateImages(jsonArray, environments)
-String versions = populateVersions(jsonArray, environments, images)
+//String versions = populateVersions(jsonArray, environments, images)
 
 
 
