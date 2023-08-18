@@ -1,6 +1,6 @@
 //hardcoded json body in real scenario this would pulled down as a json file and assigned to variable
 import groovy.json.JsonSlurper
-/*
+
 def url = new URL("https://storage.googleapis.com/tjohns-mysql-dump/query-results/query.json")
 def json = url.getText()
 
@@ -24,31 +24,18 @@ def environments = ['DEV', 'STAGE', 'PROD']
 def jsonSlurper = new JsonSlurper()
 def jsonArray = jsonSlurper.parseText(json)
 
-def images = populateImages(jsonArray, environments).inspect()
-def versions = populateVersions(jsonArray, environments, images).inspect()
-*/
+String images = populateImages(jsonArray, environments)
+String versions = populateVersions(jsonArray, environments, images)
 
 
+
+// Properties step to set the Active choice parameters via 
 properties([
     parameters([
-        [$class: 'ChoiceParameter', choiceType: 'PT_SINGLE_SELECT',   name: 'Environment', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["ERROR"]'], script: [classpath: [], sandbox: false, script: '''
-            def environments = ["DEV", "STAGE", "PROD"]
-            return environments
-        ''']]],
-        [$class: 'CascadeChoiceParameter', choiceType: 'PT_SINGLE_SELECT', name: 'Image', referencedParameters: 'Environment', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["error"]'], script: [classpath: [], sandbox: false, script: '''
-            def environmentValue = Environment.toString()
-            
-            def url = new URL("https://storage.googleapis.com/tjohns-mysql-dump/query-results/query.json")
-            def json = url.getText()
-            def jsonSlurper = new JsonSlurper()
-            def jsonArray = jsonSlurper.parseText(json)
-            
-            def images = jsonArray.findAll { it.ENV == environmentValue }.collect { it.IMAGE }
-            return images ?: ['Not Applicable']
-        ''']]]
+        [$class: 'ChoiceParameter', choiceType: 'PT_SINGLE_SELECT',   name: 'Environment', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["ERROR"]'], script: [classpath: [], sandbox: false, script: environments]]],
+[$class: 'CascadeChoiceParameter', choiceType: 'PT_SINGLE_SELECT',name: 'Image', referencedParameters: 'Environments', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["error"]'], script: [classpath: [], sandbox: false, script: images]]]
     ])
 ])
-
 
 //define pipeline actions
 pipeline {
