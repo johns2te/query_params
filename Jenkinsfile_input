@@ -14,7 +14,7 @@ def populateImages(jsonArray, environments) {
 
 def populateVersions(jsonArray, environments, images) {
     def versions = []
-    if if (environments.contains(Environment) && images.contains(Image)) {
+    if (environments.contains(Environment) && images.contains(Image)) {
         versions = jsonArray.findAll { it.ENV == environments && it.IMAGE == images }.collect { it.VERSION }
     }
     return versions ?: ['Not Applicable']
