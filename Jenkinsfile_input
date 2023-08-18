@@ -3,45 +3,37 @@ import groovy.json.JsonSlurper
 
 def url = new URL("https://storage.googleapis.com/tjohns-mysql-dump/query-results/query.json")
 def json = url.getText()
-def slurper = new JsonSlurper()
-def jsonArray = slurper.parseText(json)
 
-// Define variables
-List env_list = ["\'DEV\'","\'STAGE\'","\'PROD\'"]
-List default_item = ["\'Not Applicable\'"]
-String environments = buildScript(env_list)
-String images = populateImages(default_item)
-String versions = populateVersions(default_item)
-// Methods to build groovy scripts to populate data
-String buildScript(List values){
-  return "return $values"
+def populateImages(jsonArray, environments) {
+    def images = []
+    if (environments.contains(Environment)) {
+        images = jsonArray.findAll { it.ENV == environments }.collect { it.IMAGE }
+    }
+    return images ?: ['Not Applicable']
 }
-String populateImages(List default_item){
-    return """if(Environments.in(environments)){
-     def imageNames = jsonArray.findAll { it.ENV == Environments }.collect { it.IMAGE }
-     return imagNames
-     }
-     }else{
-     return $default_item
-     }
-     """
+
+def populateVersions(jsonArray, environments, images) {
+    def versions = []
+    if if (environments.contains(Environment) && images.contains(Image)) {
+        versions = jsonArray.findAll { it.ENV == environments && it.IMAGE == images }.collect { it.VERSION }
+    }
+    return versions ?: ['Not Applicable']
 }
-String populateVersions(List default_item){
-    return """if(Environments.in(environments)){
-     def imageVersions = jsonArray.findAll { it.ENV == Environments }.collect { it.VERSION }
-     return imageVersions
-     }
-     }else{
-     return $default_item
-     }
-     """
-}
+
+def environments = ['DEV', 'STAGE', 'PROD']
+def jsonSlurper = new JsonSlurper()
+def jsonArray = jsonSlurper.parseText(json)
+
+def images = ${populateImages(jsonArray, environments).inspect()}
+def versions = ${populateVersions(jsonArray, environments, images).inspect()}
+
+
+
 // Properties step to set the Active choice parameters via 
-// Declarative Scripting
 properties([
     parameters([
-        [$class: 'ChoiceParameter', choiceType: 'PT_SINGLE_SELECT',   name: 'Environments', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["ERROR"]'], script: [classpath: [], sandbox: false, script: environments]]],
-[$class: 'CascadeChoiceParameter', choiceType: 'PT_SINGLE_SELECT',name: 'Images', referencedParameters: 'Environments', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["error"]'], script: [classpath: [], sandbox: false, script: images]]]
+        [$class: 'ChoiceParameter', choiceType: 'PT_SINGLE_SELECT',   name: 'Environment', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["ERROR"]'], script: [classpath: [], sandbox: false, script: environments]]],
+[$class: 'CascadeChoiceParameter', choiceType: 'PT_SINGLE_SELECT',name: 'Image', referencedParameters: 'Environments', script: [$class: 'GroovyScript', fallbackScript: [classpath: [], sandbox: false, script: 'return ["error"]'], script: [classpath: [], sandbox: false, script: images]]]
     ])
 ])
 
