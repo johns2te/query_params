@@ -31,7 +31,7 @@ pipeline {
                     
                     sh'tail /home/jenkins/agent/workspace/WETG/mysql-test/query.json'
                     sh'ls -l /home/jenkins/agent/workspace/WETG/mysql-test/query.json'
-                    
+                    sleep 1000
                     stash name: 'query-results', includes: 'query.json'
                     
                 }
